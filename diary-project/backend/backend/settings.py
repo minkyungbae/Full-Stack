@@ -38,6 +38,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    # Create App List
+    'accounts', # 회원 기능 앱
+    'backend', # 메인 앱
+    'posts', # 글쓰기 앱
 ]
 
 MIDDLEWARE = [
