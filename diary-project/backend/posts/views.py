@@ -1,3 +1,14 @@
-from django.shortcuts import render
+from rest_framework.response import Response
+from rest_framework import generics, status
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from .models import Article
+from .serializers import ArticleSerializer
 
-# Create your views here.
+# 글 목록 불러오기
+class ArticleListView(generics.ListAPIView):
+    permission_classes = [AllowAny] # 누구든지 접근 가능
+    
+    def get(self, request):
+        article = Article.objects.all()
+        serializer = ArticleSerializer(article, many=True)
+        return Response(serializer.data)
