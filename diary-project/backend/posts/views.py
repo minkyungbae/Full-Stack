@@ -19,4 +19,4 @@ class ArticleCreateView(generics.CreateAPIView):
     serializer_class = ArticleSerializer
     
     def perform_create(self, serializer):
-        serializer.save(author=self.request.user)
+        serializer.save() # serializer.create() 로 변경 (validated_data는 serializer에서 처리)
