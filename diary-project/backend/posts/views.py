@@ -18,5 +18,5 @@ class ArticleCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ArticleSerializer
     
-    def context(self):
-        return {'request' : self.request}
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
