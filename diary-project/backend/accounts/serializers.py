@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.core.exceptions import ValidationError
-from rest_framework.permissions import AllowAny
 
 # settings.py에 선언했던 AUTH_USER_MODEL을 데려옴
 User = get_user_model()
