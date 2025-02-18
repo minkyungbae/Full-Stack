@@ -20,4 +20,5 @@ from django.urls import path, include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('account/', include('accounts.urls')), # accounts app의 url 연결
+    path('post/', include('posts.urls')), # posts app의 url 연결
 ]
