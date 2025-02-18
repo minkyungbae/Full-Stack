@@ -12,3 +12,12 @@ class ArticleListView(generics.ListAPIView):
         article = Article.objects.all()
         serializer = ArticleSerializer(article, many=True)
         return Response(serializer.data)
+
+class ArticleCreateView(generics.CreateAPIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        serializer = ArticleSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
