@@ -9,14 +9,15 @@ User = get_user_model()
 
 # 회원 가입
 class UserSignUpView(generics.CreateAPIView):
+    permission_class = [permissions.AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
 
 
 # 로그인
 class LogInView(generics.GenericAPIView):
-    permission_class = [permissions.AllowAny] # 인증되지 않은 사람도 접근 가능
     serializer_class = UserLogInSerializer
+    permission_class = [permissions.AllowAny] # 인증되지 않은 사람도 접근 가능
     
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -29,4 +30,6 @@ class LogInView(generics.GenericAPIView):
         }, status=status.HTTP_200_OK)
         
     
-    
+# 로그아웃
+class LogoutView(generics.GenericAPIView):
+    pass
