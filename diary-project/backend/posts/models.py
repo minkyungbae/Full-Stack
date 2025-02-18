@@ -1,6 +1,6 @@
 from django.db import models
 
-class Post(models.Model):
+class Article(models.Model):
     title = models.CharField(max_length=50)
     content = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
