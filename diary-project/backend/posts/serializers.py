@@ -6,10 +6,5 @@ class ArticleSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         field = "__all__"
-        exclude = ('created_date', 'updated_date')
-        
-    def create(self, validated_data):
-        author = self.context['request'].user
-        
-        article = Article.objects.create(author=author, **validated_data)
-        return article
+        read_only_fields = ('author',)
+        exclude = ("created_date", "updated_date")
