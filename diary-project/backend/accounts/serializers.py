@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model, authenticate
 from django.core.exceptions import ValidationError
+from rest_framework.permissions import AllowAny
 
 # settings.py에 선언했던 AUTH_USER_MODEL을 데려옴
 User = get_user_model()
@@ -32,24 +33,24 @@ class UserSignUpSerializer(serializers.ModelSerializer):
         return user
     
 # 로그인    
-class UserLogInSerializer(serializers.ModelSerializer):
+class UserLogInSerializer(serializers.Serializer):
     username = serializers.CharField(required=True) # 필수 입력
     password = serializers.CharField(required=True, write_only=True) # 필수 입력
     
-    class Meta:
-        model = User
-        fields = ('username', 'nickname', 'password', 'password2', 'bio',)
-    
-    def validate_Userpassword(self, password):
-        if not str() in password:
-            raise ValidationError("비밀번호에 문자는 필수입니다.")
-        if not int() in password:
-            raise ValidationError("비밀번호에 숫자는 필수입니다.")
-        return password
-    
-    def validate_Username(self, data):
-        user = authenticate(username=data['username'], password=data['password'])
-        if user is None:
-            raise ValidationError("아이디 또는 비밀번호가 일치하지 않습니다.")
-        data['user']=user
-        return data 
+    def validate(self, data):
+        username = data.get('username')
+        password = data.get('password')
+        
+        if username and password:
+            user = authenticate(username=username, password=password)
+            if user:
+                if user.is_active:
+                    data['user'] = user
+                else:
+                    raise ValidationError("비활성화된 계정입니다.")
+            else:
+                raise ValidationError("아이디 또는 비밀번호가 일치하지 않습니다.")
+        else:
+            raise ValidationError("존재하지 않는 아이디와 비밀번호입니다.")
+        return data   
+        
