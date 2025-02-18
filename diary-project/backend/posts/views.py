@@ -13,6 +13,7 @@ class ArticleListView(generics.ListAPIView):
         serializer = ArticleSerializer(article, many=True)
         return Response(serializer.data)
 
+# 글 생성하기
 class ArticleCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     
