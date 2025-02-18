@@ -16,9 +16,7 @@ class ArticleListView(generics.ListAPIView):
 # 글 생성하기
 class ArticleCreateView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = ArticleSerializer
     
-    def post(self, request):
-        serializer = ArticleSerializer(data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
+    def context(self):
+        return {'request' : self.request}
