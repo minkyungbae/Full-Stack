@@ -30,11 +30,11 @@ ALLOWED_HOSTS = []
 
 # 인증 토큰 발급해주는 용도 (pip install djangorestframework_simplejwt)
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
-    ],
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication', # JWT 인증
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',  # 인증된 사용자만 접근 가능
     ],
 }
 from datetime import timedelta
