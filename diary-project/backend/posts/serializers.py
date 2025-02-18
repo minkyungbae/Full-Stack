@@ -1,10 +1,10 @@
 from rest_framework import serializers
 from django.core.exceptions import ValidationError
-from .models import Post
+from .models import Article
 
 # 글쓰기
-class PostSerializer(serializers.Serializer):
+class ArticleSerializer(serializers.Serializer):
     class Meta:
-        model = Post
+        model = Article
         field = "__all__"
         
