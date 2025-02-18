@@ -54,3 +54,10 @@ class UserLogInSerializer(serializers.Serializer):
             raise ValidationError("존재하지 않는 아이디와 비밀번호입니다.")
         return data   
         
+# 로그아웃
+class UserLogOutSerializer(serializers.Serializer):
+    refresh_token = serializers.CharField()
+    
+    def validate(self, attrs):
+        return attrs
+    
