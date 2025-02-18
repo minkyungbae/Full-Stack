@@ -1,5 +1,5 @@
 from rest_framework import generics, status
-from .serializers import UserSignUpSerializer, UserLogInSerializer
+from .serializers import UserSignUpSerializer, UserLogInSerializer, UserLogOutSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -9,15 +9,15 @@ User = get_user_model()
 
 # 회원 가입
 class UserSignUpView(generics.CreateAPIView):
-    permission_class = [permissions.AllowAny]
+    permission_classes = [permissions.AllowAny]
     queryset = User.objects.all()
     serializer_class = UserSignUpSerializer
 
 
 # 로그인
 class LogInView(generics.GenericAPIView):
+    permission_classes = [permissions.AllowAny] # 인증되지 않은 사람도 접근 가능
     serializer_class = UserLogInSerializer
-    permission_class = [permissions.AllowAny] # 인증되지 않은 사람도 접근 가능
     
     def post(self, request):
         serializer = self.serializer_class(data=request.data)
@@ -31,5 +31,18 @@ class LogInView(generics.GenericAPIView):
         
     
 # 로그아웃
-class LogoutView(generics.GenericAPIView):
-    pass
+class LogOutView(generics.GenericAPIView):
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UserLogOutSerializer
+    
+    def post(self, request):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        try:
+            refresh_token = serializer.validated_data["refresh_token"]
+            token = RefreshToken(refresh_token)
+            token.blacklist()
+            return Response(status=status.HTTP_205_RESET_CONTENT)
+        except Exception as e:
+            return Response(status=status.HTTP_400_BAD_REQUEST)
