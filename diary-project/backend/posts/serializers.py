@@ -19,7 +19,7 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
         field = ["title", "content"]
-        read_only_fields = ("author",)
+        read_only_fields = ("id","author",)
         exclude = ("created_date", "updated_date")
         
     def valiate(self, data):
