@@ -33,12 +33,13 @@ class ArticleUpdateView(generics.UpdateAPIView):
 class ArticleDeleteView(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ArticleDeleteSerializer
+    queryset = Article.objects.all()
     
     def get_serializer_context(self):
         return {'request': self.request }
     
     def perform_destroy(self, instance):
-        serializer = self.get_serializer(instance=instance)
-        serializer.is_valid(rasie_exception=True)
-        serialzier.delete(instance)
+        serializer = self.get_serializer(instance=instance, data={})
+        serializer.is_valid()
+        serializer.delete(instance)
     
