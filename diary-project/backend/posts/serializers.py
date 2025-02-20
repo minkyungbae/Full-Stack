@@ -42,6 +42,8 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
 class ArticleDeleteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Article
+        field = []
+        exclude = ("created_date", "updated_date")
         
     def validate(self, data):
         instance = self.instance
