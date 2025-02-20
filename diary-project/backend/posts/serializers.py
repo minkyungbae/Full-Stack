@@ -37,4 +37,18 @@ class ArticleUpdateSerializer(serializers.ModelSerializer):
         instance.save()
         return instance
         
-            
+
+# Delete serializer
+class ArticleDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Article
+        
+    def validate(self, data):
+        instance = self.instance
+        request = self.context.get('request')
+        if request and request.user != instance.author:
+            raise serializers.ValidationError("글 작성자도 아니면서 왜 삭제하려 하세욧?")
+        return data
+    
+    def delete(self, instance):
+        instance.delete()
