@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import generics, status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Article
-from .serializers import ArticleSerializer, ArticleUpdateSerializer
+from .serializers import ArticleSerializer, ArticleUpdateSerializer, ArticleDeleteSerializer
 
 # 글 목록 불러오기
 class ArticleListView(generics.ListAPIView):
@@ -25,7 +25,20 @@ class ArticleCreateView(generics.CreateAPIView):
 class ArticleUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ArticleUpdateSerializer
-    queryset = Article.objects.all()
     
     def get_serializer_context(self):
         return {'request': self.request }
+    
+# 글 삭제하기
+class ArticleDeleteView(generics.DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = ArticleDeleteSerializer
+    
+    def get_serializer_context(self):
+        return {'request': self.request }
+    
+    def perform_destroy(self, instance):
+        serializer = self.get_serializer(instance=instance)
+        serializer.is_valid(rasie_exception=True)
+        serialzier.delete(instance)
+    
