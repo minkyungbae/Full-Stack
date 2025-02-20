@@ -25,6 +25,7 @@ class ArticleCreateView(generics.CreateAPIView):
 class ArticleUpdateView(generics.UpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = ArticleUpdateSerializer
+    queryset = Article.objects.all()
     
     def get_serializer_context(self):
         return {'request': self.request }
